@@ -1,0 +1,971 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Italiana&display=swap");
+@import "tailwindcss";
+
+:root {
+  --ink: #141612;
+  --cream: #f3efe6;
+  --paper: #faf8f3;
+  --olive: #64704e;
+  --gold: #b99b65;
+  --line: rgba(20, 22, 18, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "DM Sans", sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.shell {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+/* Cabeçalho */
+
+.nav {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 98px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: 2.6px;
+}
+
+.brand > span {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--ink);
+  font-family: "Italiana", serif;
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+.brand strong {
+  font-size: 11px;
+}
+
+.nav nav {
+  display: flex;
+  gap: 34px;
+  font-size: 13px;
+}
+
+.nav nav a {
+  transition: color 0.2s ease;
+}
+
+.nav nav a:hover {
+  color: var(--olive);
+}
+
+/* Botões */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 17px 22px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.button:hover {
+  border-color: var(--olive);
+  background: var(--olive);
+  transform: translateY(-2px);
+}
+
+.button i {
+  color: #d6c08e;
+  font-style: normal;
+}
+
+.button-small {
+  padding: 12px 17px;
+}
+
+/* Página inicial */
+
+.hero {
+  display: grid;
+  grid-template-columns: 52% 48%;
+  align-items: center;
+  min-height: 660px;
+}
+
+.hero-copy {
+  padding: 68px 50px 70px 0;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #5d6157;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.4px;
+}
+
+.eyebrow > span {
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+}
+
+h1,
+h2 {
+  margin: 20px 0;
+  font-family: "Italiana", serif;
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: -1.5px;
+}
+
+h1 {
+  font-size: clamp(64px, 7vw, 98px);
+}
+
+h1 em,
+h2 em {
+  color: var(--olive);
+  font-weight: 400;
+}
+
+.lead {
+  max-width: 510px;
+  color: #6f716b;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  margin-top: 36px;
+}
+
+.text-link {
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--ink);
+  font-size: 12px;
+}
+
+.text-link span {
+  margin-left: 12px;
+  color: var(--gold);
+}
+
+/* Avaliações */
+
+.social-proof {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 55px;
+}
+
+.avatars {
+  display: flex;
+}
+
+.avatars span {
+  display: grid;
+  width: 35px;
+  height: 35px;
+  margin-left: -7px;
+  place-items: center;
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  background: #363a31;
+  color: #e5d8ba;
+  font-size: 9px;
+}
+
+.avatars span:first-child {
+  margin-left: 0;
+}
+
+.social-proof strong {
+  font-size: 12px;
+}
+
+.social-proof strong span {
+  margin-left: 4px;
+  color: var(--gold);
+  font-size: 9px;
+}
+
+.social-proof small {
+  display: block;
+  margin-top: 4px;
+  color: #898b84;
+  font-size: 10px;
+}
+
+/* Visual principal */
+
+.hero-visual {
+  position: relative;
+  height: 590px;
+}
+
+.barber-portrait {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20, 22, 18, 0.1),
+      rgba(20, 22, 18, 0.8)
+    ),
+    radial-gradient(
+      circle at 70% 30%,
+      #8b806d,
+      #35392f 53%,
+      #191b17
+    );
+}
+
+.portrait-lines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    105deg,
+    transparent 0 42px,
+    rgba(255, 255, 255, 0.025) 43px 44px
+  );
+}
+
+.monogram {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  color: rgba(239, 227, 199, 0.65);
+  font-family: "Italiana", serif;
+  font-size: 120px;
+  letter-spacing: 8px;
+}
+
+.monogram span {
+  color: #d3b979;
+  font-size: 24px;
+}
+
+.floating-card {
+  position: absolute;
+  bottom: 44px;
+  left: -62px;
+  width: 230px;
+  padding: 23px;
+  background: var(--cream);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.16);
+}
+
+.floating-card > span,
+.floating-card small {
+  display: block;
+  color: #777970;
+  font-size: 9px;
+  letter-spacing: 1.6px;
+}
+
+.floating-card strong {
+  display: block;
+  margin: 10px 0 4px;
+  font-family: "Italiana", serif;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.floating-card a {
+  display: block;
+  margin-top: 16px;
+  color: var(--olive);
+  font-size: 11px;
+}
+
+.vertical {
+  position: absolute;
+  top: 50%;
+  right: -35px;
+  color: #a9aaa4;
+  font-size: 8px;
+  letter-spacing: 2.4px;
+  transform: rotate(90deg);
+}
+
+/* Nossa essência */
+
+.statement {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 115px 24px;
+  text-align: center;
+}
+
+.center {
+  justify-content: center;
+}
+
+.statement h2,
+.services h2,
+.team-band h2 {
+  font-size: clamp(44px, 5vw, 67px);
+}
+
+.statement > p:last-child {
+  max-width: 590px;
+  margin: 28px auto 0;
+  color: #73766e;
+  line-height: 1.8;
+}
+
+/* Serviços */
+
+.services {
+  padding: 90px 0 120px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 55px;
+  border-left: 1px solid var(--line);
+}
+
+.service-grid article {
+  padding: 35px;
+  border: 1px solid var(--line);
+  border-left: 0;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.service-grid article:hover {
+  background: var(--ink);
+  color: #ffffff;
+  transform: translateY(-8px);
+}
+
+.service-top,
+.service-grid article > div:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.service-icon {
+  color: var(--gold);
+  font-size: 30px;
+}
+
+.service-top small {
+  color: #aaaaaa;
+  font-family: "Italiana", serif;
+}
+
+.service-grid h3 {
+  margin-top: 55px;
+  font-family: "Italiana", serif;
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.service-grid p {
+  min-height: 45px;
+  color: #85877f;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.service-grid article > div:last-child {
+  margin-top: 35px;
+}
+
+.service-grid article > div:last-child strong {
+  font-weight: 500;
+}
+
+.service-grid article > div:last-child a {
+  display: grid;
+  width: 35px;
+  height: 35px;
+  place-items: center;
+  border: 1px solid currentColor;
+}
+
+/* Equipe */
+
+.team-band {
+  padding: 105px 0;
+  background: var(--ink);
+  color: #eee9df;
+}
+
+.team-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+}
+
+.team-band .eyebrow {
+  color: #b5b7ae;
+}
+
+.team-band h2 em {
+  color: #a9b28d;
+}
+
+.team-list {
+  border-top: 1px solid #393b36;
+}
+
+.team-list > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 0;
+  border-bottom: 1px solid #393b36;
+}
+
+.team-list strong {
+  font-family: "Italiana", serif;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.team-list small {
+  color: #9d9f97;
+  font-family: "DM Sans", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.6px;
+}
+
+/* Rodapé */
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 190px;
+}
+
+footer p {
+  color: #797b74;
+  font-size: 11px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* Página de agendamento */
+
+.booking-page {
+  min-height: 100vh;
+  background: #ede8dc;
+}
+
+.booking-nav {
+  background: var(--paper);
+}
+
+.booking-wrap {
+  padding: 70px 0 100px;
+}
+
+.booking-title {
+  margin-bottom: 42px;
+  text-align: center;
+}
+
+.booking-title h1 {
+  margin: 12px;
+  font-size: 58px;
+}
+
+.booking-title p {
+  color: #74776e;
+}
+
+.booking-card {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  max-width: 980px;
+  margin: 0 auto;
+  background: var(--paper);
+  box-shadow: 0 20px 60px rgba(44, 40, 31, 0.1);
+}
+
+.booking-form {
+  padding: 45px;
+}
+
+.steps {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.steps span {
+  flex: 1;
+  height: 3px;
+  background: #ddd7ca;
+}
+
+.steps .active {
+  background: var(--olive);
+}
+
+.booking-form h2 {
+  font-size: 35px;
+}
+
+.field-label {
+  display: block;
+  margin: 25px 0 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.option {
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.option strong,
+.option small {
+  display: block;
+}
+
+.option small {
+  margin-top: 5px;
+  color: #8b8d86;
+}
+
+.option.selected {
+  border-color: var(--olive);
+  background: #eef0e8;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.time {
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.time.selected {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.inputs input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--line);
+  outline: none;
+  background: #ffffff;
+}
+
+.inputs input:focus {
+  border-color: var(--olive);
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.booking-form .button {
+  width: 100%;
+  margin-top: 28px;
+}
+
+.form-error {
+  margin: 16px 0 0;
+  color: #a33b32;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Resumo do agendamento */
+
+.summary {
+  padding: 42px 30px;
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.summary h3 {
+  font-family: "Italiana", serif;
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.summary-line {
+  padding: 18px 0;
+  border-top: 1px solid #3a3c37;
+}
+
+.summary-line small {
+  display: block;
+  margin-bottom: 6px;
+  color: #90938a;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+.summary-line strong {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 22px;
+  border-top: 1px solid #5d604f;
+}
+
+.total strong {
+  color: #d6c08e;
+}
+
+/* Confirmação do agendamento */
+
+.success {
+  padding: 70px 30px;
+  text-align: center;
+}
+
+.success-mark {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto;
+  place-items: center;
+  border: 1px solid var(--olive);
+  border-radius: 50%;
+  color: var(--olive);
+  font-size: 30px;
+}
+
+.success h2 {
+  font-size: 42px;
+}
+
+.success p {
+  color: #73766e;
+  line-height: 1.8;
+}
+
+.success .button {
+  margin-top: 20px;
+}
+
+/* Botão flutuante do WhatsApp */
+
+.whatsapp-button {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 12px 18px;
+  border-radius: 50px;
+
+  background: #25d366;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.whatsapp-button svg {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.whatsapp-button:hover {
+  background: #1ebe5d;
+  color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+}
+
+/* Tablets */
+
+@media (max-width: 850px) {
+  .shell {
+    width: min(calc(100% - 30px), 680px);
+  }
+
+  .nav {
+    height: 78px;
+  }
+
+  .nav nav {
+    display: none;
+  }
+
+  .button-small {
+    gap: 0;
+    font-size: 0;
+  }
+
+  .button-small::after {
+    content: "Agendar";
+    font-size: 11px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 30px;
+  }
+
+  .hero-copy {
+    padding: 45px 0;
+  }
+
+  .hero-visual {
+    height: 430px;
+  }
+
+  .floating-card {
+    left: 16px;
+  }
+
+  .vertical {
+    display: none;
+  }
+
+  .statement {
+    padding: 85px 20px;
+  }
+
+  .section-heading {
+    display: block;
+  }
+
+  .section-heading > .text-link {
+    display: inline-block;
+    margin-top: 10px;
+  }
+
+  .service-grid {
+    grid-template-columns: 1fr;
+    border-top: 1px solid var(--line);
+  }
+
+  .service-grid article {
+    border-top: 0;
+  }
+
+  .team-content {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 30px;
+    padding: 55px 0;
+  }
+
+  footer p {
+    order: 3;
+  }
+
+  .booking-card {
+    grid-template-columns: 1fr;
+  }
+
+  .summary {
+    order: -1;
+  }
+
+  .time-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Celulares */
+
+@media (max-width: 520px) {
+  h1 {
+    font-size: 56px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .monogram {
+    font-size: 76px;
+  }
+
+  .social-proof {
+    margin-top: 38px;
+  }
+
+  .team-list > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .team-list strong {
+    font-size: 19px;
+  }
+
+  .nav .brand div {
+    display: none;
+  }
+
+  .booking-wrap {
+    padding-top: 35px;
+  }
+
+  .booking-title h1 {
+    font-size: 42px;
+  }
+
+  .booking-form {
+    padding: 28px 20px;
+  }
+
+  .option-grid,
+  .inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: auto;
+  }
+
+  .time-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .whatsapp-button {
+    right: 16px;
+    bottom: 16px;
+    width: 58px;
+    height: 58px;
+    padding: 0;
+  }
+
+  .whatsapp-button span {
+    display: none;
+  }
+
+  .whatsapp-button svg {
+    width: 30px;
+    height: 30px;
+  }
+}
