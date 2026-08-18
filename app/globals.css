@@ -2150,4 +2150,38 @@ footer p {
     margin-bottom: 40px;
   }
 }
+/* Setas compatíveis com iPhone */
+.button i {
+  position: relative;
+  display: inline-block;
+  flex: 0 0 13px;
+  width: 13px;
+  height: 13px;
+  overflow: hidden;
+  color: transparent;
+  font-size: 0;
+}
+
+.button i::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 1px;
+  width: 7px;
+  height: 7px;
+  border-top: 1.5px solid #d6c08e;
+  border-right: 1.5px solid #d6c08e;
+}
+
+.button i::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 2px;
+  width: 10px;
+  height: 1.5px;
+  background: #d6c08e;
+  transform: rotate(-45deg);
+  transform-origin: center;
+}
 }
