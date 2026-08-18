@@ -4,19 +4,22 @@ const services = [
   {
     icon: "✦",
     name: "Corte Signature",
-    description: "Consultoria, corte, lavagem e finalização.",
+    description:
+      "Consultoria, corte, lavagem e finalização.",
     price: "R$ 85",
   },
   {
     icon: "⌁",
     name: "Barba Imperial",
-    description: "Toalha quente, ritual de óleos e acabamento.",
+    description:
+      "Toalha quente, ritual de óleos e acabamento.",
     price: "R$ 65",
   },
   {
     icon: "◇",
     name: "Experiência Maison",
-    description: "Corte, barba, sobrancelha e cuidado facial.",
+    description:
+      "Corte, barba, sobrancelha e cuidado facial.",
     price: "R$ 165",
   },
 ];
@@ -25,7 +28,11 @@ export default function Home() {
   return (
     <main>
       <header className="nav shell">
-        <Link className="brand" href="/" aria-label="Maison Navalha">
+        <Link
+          className="brand"
+          href="/"
+          aria-label="Maison Navalha"
+        >
           <span>MN</span>
 
           <div>
@@ -41,13 +48,44 @@ export default function Home() {
           <a href="#equipe">Especialistas</a>
         </nav>
 
-        <Link
-          className="button button-small"
-          href="/agendamento"
-        >
-          Agendar horário
-          <i aria-hidden="true">↗</i>
-        </Link>
+        <div className="nav-actions">
+          <Link
+            className="client-area-link"
+            href="/agendamento"
+          >
+            Área do cliente
+          </Link>
+
+          <Link
+            className="admin-login-link"
+            href="/login"
+          >
+            <span className="login-icon">
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 8a7 7 0 0 0-14 0"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>
+
+            Entrar
+          </Link>
+
+          <Link
+            className="button button-small"
+            href="/agendamento"
+          >
+            Agendar horário
+            <i aria-hidden="true">↗</i>
+          </Link>
+        </div>
       </header>
 
       <section className="hero shell">
@@ -64,25 +102,34 @@ export default function Home() {
           </h1>
 
           <p className="lead">
-            Mais que um corte. Um ritual de precisão, cuidado e
-            personalidade criado para homens que valorizam cada
-            detalhe.
+            Mais que um corte. Um ritual de precisão,
+            cuidado e personalidade criado para homens
+            que valorizam cada detalhe.
           </p>
 
           <div className="hero-actions">
-            <Link className="button" href="/agendamento">
+            <Link
+              className="button"
+              href="/agendamento"
+            >
               Reservar experiência
               <i aria-hidden="true">↗</i>
             </Link>
 
-            <a className="text-link" href="#servicos">
+            <a
+              className="text-link"
+              href="#servicos"
+            >
               Conhecer serviços
               <span aria-hidden="true">↓</span>
             </a>
           </div>
 
           <div className="social-proof">
-            <div className="avatars" aria-hidden="true">
+            <div
+              className="avatars"
+              aria-hidden="true"
+            >
               <span>RM</span>
               <span>LC</span>
               <span>GA</span>
@@ -104,15 +151,22 @@ export default function Home() {
           <div className="barber-portrait">
             <div className="portrait-lines" />
 
-            <div className="monogram" aria-hidden="true">
+            <div
+              className="monogram"
+              aria-hidden="true"
+            >
               M<span>✦</span>N
             </div>
           </div>
 
           <div className="floating-card">
             <span>PRÓXIMO HORÁRIO</span>
-            <strong>Hoje, 14:30</strong>
-            <small>Com Rafael Monteiro</small>
+
+            <strong>Consulte a agenda</strong>
+
+            <small>
+              Escolha o profissional e o serviço
+            </small>
 
             <Link href="/agendamento">
               Reservar agora →
@@ -142,9 +196,10 @@ export default function Home() {
         </h2>
 
         <p>
-          Acreditamos que cuidar de si é uma forma de presença.
-          Por isso, cada atendimento é exclusivo, sem pressa e
-          pensado nos seus traços.
+          Acreditamos que cuidar de si é uma forma de
+          presença. Por isso, cada atendimento é
+          exclusivo, sem pressa e pensado nos seus
+          traços.
         </p>
       </section>
 
@@ -231,18 +286,83 @@ export default function Home() {
           <div className="team-list">
             <div>
               <strong>Rafael Monteiro</strong>
-              <small>Barbeiro master · 12 anos</small>
+              <small>
+                Barbeiro master · 12 anos
+              </small>
             </div>
 
             <div>
               <strong>Lucas Carvalho</strong>
-              <small>Especialista em visagismo</small>
+              <small>
+                Especialista em visagismo
+              </small>
             </div>
 
             <div>
               <strong>Gabriel Alves</strong>
               <small>Barba e grooming</small>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="access-section">
+        <div className="shell access-content">
+          <div>
+            <p className="eyebrow">
+              <span aria-hidden="true" />
+              ACESSO RÁPIDO
+            </p>
+
+            <h2>
+              Escolha como deseja
+              <br />
+              <em>acessar a Maison.</em>
+            </h2>
+          </div>
+
+          <div className="access-options">
+            <article>
+              <span className="access-number">
+                01
+              </span>
+
+              <h3>Sou cliente</h3>
+
+              <p>
+                Escolha o serviço, o barbeiro, a data e
+                o horário do seu atendimento.
+              </p>
+
+              <Link
+                className="button"
+                href="/agendamento"
+              >
+                Fazer agendamento
+                <i aria-hidden="true">↗</i>
+              </Link>
+            </article>
+
+            <article>
+              <span className="access-number">
+                02
+              </span>
+
+              <h3>Sou administrador</h3>
+
+              <p>
+                Acesse o painel para confirmar, concluir
+                e cancelar os agendamentos.
+              </p>
+
+              <Link
+                className="button admin-access-button"
+                href="/login"
+              >
+                Entrar no painel
+                <i aria-hidden="true">↗</i>
+              </Link>
+            </article>
           </div>
         </div>
       </section>
@@ -268,9 +388,21 @@ export default function Home() {
           Terça a sábado, das 09h às 20h
         </p>
 
-        <Link className="button" href="/agendamento">
-          Agendar meu horário
-        </Link>
+        <div className="footer-actions">
+          <Link
+            className="footer-admin-link"
+            href="/login"
+          >
+            Área administrativa
+          </Link>
+
+          <Link
+            className="button"
+            href="/agendamento"
+          >
+            Agendar meu horário
+          </Link>
+        </div>
       </footer>
 
       <a

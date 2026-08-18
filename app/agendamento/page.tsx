@@ -1,11 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import {
+  FormEvent,
+  useEffect,
+  useState,
+} from "react";
 
 interface Service {
   name: string;
   duration: string;
+  price: number;
+}
+
+interface BookingConfirmation {
+  id: string;
+  bookingCode: string;
+  clientName: string;
+  phone: string;
+  email: string | null;
+  date: string;
+  time: string;
+  status: string;
+  barber: string;
+  service: string;
+  duration: number;
   price: number;
 }
 
@@ -38,7 +57,7 @@ const barbers = [
   "Gabriel Alves",
 ];
 
-const availableTimes = [
+const times = [
   "09:00",
   "10:00",
   "11:30",
@@ -51,25 +70,122 @@ const availableTimes = [
 
 function getCurrentDate() {
   const today = new Date();
-  const timezoneOffset = today.getTimezoneOffset() * 60_000;
-  const localDate = new Date(today.getTime() - timezoneOffset);
+  const offset = today.getTimezoneOffset() * 60_000;
+  const localDate = new Date(
+    today.getTime() - offset,
+  );
 
   return localDate.toISOString().split("T")[0];
 }
 
-export default function Booking() {
-  const [selectedService, setSelectedService] = useState<Service>(
-    services[0],
-  );
-  const [selectedBarber, setSelectedBarber] = useState(barbers[0]);
-  const [selectedTime, setSelectedTime] = useState("14:30");
+function formatDate(date: string) {
+  return new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(`${date}T12:00:00`));
+}
 
-  const [sent, setSent] = useState(false);
+export default function Booking() {
+  const [selectedService, setSelectedService] =
+    useState<Service>(services[0]);
+
+  const [selectedBarber, setSelectedBarber] =
+    useState(barbers[0]);
+
+  const [selectedDate, setSelectedDate] =
+    useState("");
+
+  const [selectedTime, setSelectedTime] =
+    useState("");
+
+  const [occupiedTimes, setOccupiedTimes] = useState<
+    string[]
+  >([]);
+
+  const [loadingTimes, setLoadingTimes] =
+    useState(false);
+
   const [loading, setLoading] = useState(false);
+
+  const [confirmation, setConfirmation] =
+    useState<BookingConfirmation | null>(null);
+
+  const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    async function loadAvailableTimes() {
+      if (!selectedDate || !selectedBarber) {
+        setOccupiedTimes([]);
+        return;
+      }
+
+      setLoadingTimes(true);
+      setError("");
+
+      try {
+        const params = new URLSearchParams({
+          barber: selectedBarber,
+          date: selectedDate,
+        });
+
+        const response = await fetch(
+          `/api/agendamentos?${params.toString()}`,
+          {
+            cache: "no-store",
+          },
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ??
+              "Não foi possível consultar os horários.",
+          );
+        }
+
+        const occupied: string[] =
+          data.occupiedTimes ?? [];
+
+        setOccupiedTimes(occupied);
+
+        setSelectedTime((currentTime) =>
+          occupied.includes(currentTime)
+            ? ""
+            : currentTime,
+        );
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Não foi possível consultar os horários.";
+
+        setError(message);
+        setOccupiedTimes([]);
+      } finally {
+        setLoadingTimes(false);
+      }
+    }
+
+    loadAvailableTimes();
+  }, [selectedBarber, selectedDate]);
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>,
+  ) {
     event.preventDefault();
+
+    if (!selectedDate) {
+      setError("Escolha uma data.");
+      return;
+    }
+
+    if (!selectedTime) {
+      setError("Escolha um horário disponível.");
+      return;
+    }
 
     setLoading(true);
     setError("");
@@ -81,32 +197,34 @@ export default function Booking() {
       name: formData.get("name"),
       phone: formData.get("phone"),
       email: formData.get("email"),
-      date: formData.get("date"),
-      service: selectedService.name,
-      barber: selectedBarber,
+      date: selectedDate,
       time: selectedTime,
-      duration: selectedService.duration,
-      price: selectedService.price,
+      barber: selectedBarber,
+      service: selectedService.name,
     };
 
     try {
-      const response = await fetch("/api/agendamentos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "/api/agendamentos",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(appointment),
         },
-        body: JSON.stringify(appointment),
-      });
+      );
+
+      const data = await response.json();
 
       if (!response.ok) {
-        const data = await response.json().catch(() => null);
-
         throw new Error(
-          data?.error ?? "Não foi possível realizar o agendamento.",
+          data.error ??
+            "Não foi possível realizar o agendamento.",
         );
       }
 
-      setSent(true);
+      setConfirmation(data.appointment);
       form.reset();
     } catch (error) {
       const message =
@@ -118,6 +236,22 @@ export default function Booking() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function copyBookingCode() {
+    if (!confirmation) {
+      return;
+    }
+
+    await navigator.clipboard.writeText(
+      confirmation.bookingCode,
+    );
+
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
   }
 
   return (
@@ -154,27 +288,104 @@ export default function Booking() {
             Agende sua <em>experiência.</em>
           </h1>
 
-          <p>Escolha cada detalhe. Nós cuidamos do restante.</p>
+          <p>
+            Escolha cada detalhe. Nós cuidamos do
+            restante.
+          </p>
         </div>
 
-        {sent ? (
+        {confirmation ? (
           <section className="booking-card success">
             <div>
-              <div className="success-mark" aria-hidden="true">
+              <div
+                className="success-mark"
+                aria-hidden="true"
+              >
                 ✓
               </div>
+
+              <p className="eyebrow center">
+                AGENDAMENTO CONFIRMADO
+              </p>
 
               <h2>Horário reservado.</h2>
 
               <p>
-                Seu agendamento foi registrado com sucesso.
+                Seu agendamento foi registrado com
+                sucesso.
                 <br />
-                Enviaremos a confirmação pelo WhatsApp.
+                Guarde o código abaixo para consultar,
+                cancelar ou reagendar.
               </p>
 
-              <Link href="/" className="button">
-                Voltar para o início
-              </Link>
+              <div className="booking-code-box">
+                <small>
+                  SEU CÓDIGO DE AGENDAMENTO
+                </small>
+
+                <strong>
+                  {confirmation.bookingCode}
+                </strong>
+
+                <button
+                  type="button"
+                  onClick={copyBookingCode}
+                >
+                  {copied
+                    ? "Código copiado!"
+                    : "Copiar código"}
+                </button>
+              </div>
+
+              <div className="confirmation-details">
+                <div>
+                  <small>SERVIÇO</small>
+
+                  <strong>
+                    {confirmation.service}
+                  </strong>
+                </div>
+
+                <div>
+                  <small>BARBEIRO</small>
+
+                  <strong>
+                    {confirmation.barber}
+                  </strong>
+                </div>
+
+                <div>
+                  <small>DATA</small>
+
+                  <strong>
+                    {formatDate(confirmation.date)}
+                  </strong>
+                </div>
+
+                <div>
+                  <small>HORÁRIO</small>
+
+                  <strong>
+                    {confirmation.time}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="success-actions">
+                <Link
+                  href="/meus-agendamentos"
+                  className="button"
+                >
+                  Consultar agendamento
+                </Link>
+
+                <Link
+                  href="/"
+                  className="text-link"
+                >
+                  Voltar para o início
+                </Link>
+              </div>
             </div>
           </section>
         ) : (
@@ -183,7 +394,10 @@ export default function Booking() {
               className="booking-form"
               onSubmit={handleSubmit}
             >
-              <div className="steps" aria-hidden="true">
+              <div
+                className="steps"
+                aria-hidden="true"
+              >
                 <span className="active" />
                 <span className="active" />
                 <span />
@@ -198,7 +412,8 @@ export default function Booking() {
               <div className="option-grid">
                 {services.map((service) => {
                   const isSelected =
-                    selectedService.name === service.name;
+                    selectedService.name ===
+                    service.name;
 
                   return (
                     <button
@@ -210,12 +425,15 @@ export default function Booking() {
                           : "option"
                       }
                       aria-pressed={isSelected}
-                      onClick={() => setSelectedService(service)}
+                      onClick={() =>
+                        setSelectedService(service)
+                      }
                     >
                       <strong>{service.name}</strong>
 
                       <small>
-                        {service.duration} · R$ {service.price}
+                        {service.duration} · R${" "}
+                        {service.price}
                       </small>
                     </button>
                   );
@@ -241,16 +459,25 @@ export default function Booking() {
                           : "option"
                       }
                       aria-pressed={isSelected}
-                      onClick={() => setSelectedBarber(barber)}
+                      onClick={() => {
+                        setSelectedBarber(barber);
+                        setSelectedTime("");
+                      }}
                     >
                       <strong>{barber}</strong>
-                      <small>Especialista Maison</small>
+
+                      <small>
+                        Especialista Maison
+                      </small>
                     </button>
                   );
                 })}
               </div>
 
-              <label className="field-label" htmlFor="date">
+              <label
+                className="field-label"
+                htmlFor="date"
+              >
                 03 · DATA E HORÁRIO
               </label>
 
@@ -260,13 +487,31 @@ export default function Booking() {
                   name="date"
                   type="date"
                   min={getCurrentDate()}
+                  value={selectedDate}
                   required
+                  onChange={(event) => {
+                    setSelectedDate(
+                      event.target.value,
+                    );
+
+                    setSelectedTime("");
+                  }}
                 />
               </div>
 
+              {loadingTimes && (
+                <p className="loading-times">
+                  Consultando horários disponíveis...
+                </p>
+              )}
+
               <div className="time-grid">
-                {availableTimes.map((time) => {
-                  const isSelected = selectedTime === time;
+                {times.map((time) => {
+                  const isOccupied =
+                    occupiedTimes.includes(time);
+
+                  const isSelected =
+                    selectedTime === time;
 
                   return (
                     <button
@@ -275,12 +520,29 @@ export default function Booking() {
                       className={
                         isSelected
                           ? "time selected"
-                          : "time"
+                          : isOccupied
+                            ? "time occupied"
+                            : "time"
                       }
-                      aria-pressed={isSelected}
-                      onClick={() => setSelectedTime(time)}
+                      disabled={
+                        !selectedDate ||
+                        isOccupied ||
+                        loadingTimes
+                      }
+                      aria-label={
+                        isOccupied
+                          ? `${time} indisponível`
+                          : `${time} disponível`
+                      }
+                      onClick={() =>
+                        setSelectedTime(time)
+                      }
                     >
                       {time}
+
+                      {isOccupied && (
+                        <small>Ocupado</small>
+                      )}
                     </button>
                   );
                 })}
@@ -320,7 +582,10 @@ export default function Booking() {
               </div>
 
               {error && (
-                <p className="form-error" role="alert">
+                <p
+                  className="form-error"
+                  role="alert"
+                >
                   {error}
                 </p>
               )}
@@ -339,28 +604,50 @@ export default function Booking() {
             </form>
 
             <aside className="summary">
-              <p className="eyebrow">SEU AGENDAMENTO</p>
+              <p className="eyebrow">
+                SEU AGENDAMENTO
+              </p>
 
               <h3>Resumo da experiência</h3>
 
               <div className="summary-line">
                 <small>SERVIÇO</small>
-                <strong>{selectedService.name}</strong>
+
+                <strong>
+                  {selectedService.name}
+                </strong>
               </div>
 
               <div className="summary-line">
                 <small>ESPECIALISTA</small>
+
                 <strong>{selectedBarber}</strong>
               </div>
 
               <div className="summary-line">
+                <small>DATA</small>
+
+                <strong>
+                  {selectedDate
+                    ? formatDate(selectedDate)
+                    : "Não escolhida"}
+                </strong>
+              </div>
+
+              <div className="summary-line">
                 <small>HORÁRIO</small>
-                <strong>{selectedTime}</strong>
+
+                <strong>
+                  {selectedTime || "Não escolhido"}
+                </strong>
               </div>
 
               <div className="summary-line">
                 <small>DURAÇÃO</small>
-                <strong>{selectedService.duration}</strong>
+
+                <strong>
+                  {selectedService.duration}
+                </strong>
               </div>
 
               <div className="total">

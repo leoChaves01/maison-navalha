@@ -1,42 +1,58 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# Dependências
 /node_modules
 /.pnp
 .pnp.*
+
+# Yarn
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# Testes
 /coverage
 
-# next.js
+# Next.js
 /.next/
 /out/
 
-# misc
-.DS_Store
-*.pem
+# Arquivos gerados
+/dist/
+/outputs/
+/work/
+/.wrangler/
+/.sites-runtime/
+/app/generated/prisma
 
-# debug
+# Variáveis de ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Permite enviar o modelo sem senhas
+!.env.example
+
+# Vercel
+.vercel
+
+# TypeScript
+next-env.d.ts
+*.tsbuildinfo
+
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# Sistema operacional
+.DS_Store
+Thumbs.db
 
-# vercel
-.vercel
-
-# typescript
-next-env.d.ts
-/dist/
-/.wrangler/
-/.sites-runtime/
-/outputs/
-/work/
+# Certificados e arquivos privados
+*.pem
+*.keyx
