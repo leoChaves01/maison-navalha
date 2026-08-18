@@ -2064,4 +2064,90 @@ footer p {
   .cancel-button {
     width: 100%;
   }
+  /* Correção da área do cliente no celular */
+@media (max-width: 520px) {
+  .customer-appointments-page {
+    overflow-x: hidden;
+  }
+
+  .customer-appointments-wrap {
+    width: calc(100% - 24px);
+    padding-top: 30px;
+    padding-bottom: 150px;
+  }
+
+  .customer-appointments-wrap .booking-title {
+    margin-bottom: 30px;
+  }
+
+  .customer-appointments-wrap .booking-title h1 {
+    font-size: 42px;
+    line-height: 1;
+  }
+
+  .customer-appointments-wrap .booking-title p:last-child {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .appointment-result {
+    width: 100%;
+    padding: 24px 16px;
+  }
+
+  .result-header {
+    gap: 16px;
+    padding-bottom: 22px;
+  }
+
+  .result-header h2 {
+    margin: 12px 0 8px;
+    font-size: 34px;
+  }
+
+  .result-status {
+    width: fit-content;
+  }
+
+  .result-code {
+    margin-top: 20px;
+    padding: 16px;
+  }
+
+  .result-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 18px;
+  }
+
+  .result-grid > div {
+    min-width: 0;
+    min-height: 88px;
+    padding: 15px 12px;
+  }
+
+  .result-grid small {
+    margin-bottom: 7px;
+    font-size: 8px;
+  }
+
+  .result-grid strong {
+    overflow-wrap: anywhere;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .result-actions {
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .secondary-button,
+  .cancel-button {
+    min-height: 48px;
+  }
+
+  .customer-help {
+    margin-bottom: 40px;
+  }
+}
 }
